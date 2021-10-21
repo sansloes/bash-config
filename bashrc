@@ -27,11 +27,12 @@ case "$TERM" in
 esac
 
 # Get GIT Branch
-function parse_git_dirty {
+parse_git_dirty()
+{
   [[ $(git status 2> /dev/null | tail -n1) != "nothing to commit, working tree clean" ]] && echo "*"
 }
 
-function parse_git_branch() 
+parse_git_branch()
 {
   git branch --no-color 2> /dev/null | sed -e '/^[^*]/d' -e "s/* \(.*\)/(\1$(parse_git_dirty))/"
 }
@@ -66,4 +67,19 @@ if ! shopt -oq posix; then
   fi
 fi
 
-source ~/.alias
+# Alias
+alias ls='ls --color=auto'
+alias ll='ls -lF'
+alias lrt='ll -rt'
+
+alias grep='grep --color=auto'
+
+alias reload='source ~/.bashrc'
+#Remove every local branch not existing on remote
+function nor
+{
+  git fetch -p && for branch in $(git branch -vv | grep ': gone]' | awk '{print $1}'); do git branch -D $branch; done
+}
+
+# Source locally needed alias and stuff
+source ~/.local-stuff
