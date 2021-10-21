@@ -76,9 +76,14 @@ alias grep='grep --color=auto'
 
 alias reload='source ~/.bashrc'
 #Remove every local branch not existing on remote
-function nor
+rm_local()
 {
   git fetch -p && for branch in $(git branch -vv | grep ': gone]' | awk '{print $1}'); do git branch -D $branch; done
+}
+rm_tag()
+{
+  git push origin :refs/tags/$1
+  git tag --delete $1
 }
 
 # Source locally needed alias and stuff
