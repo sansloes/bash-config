@@ -68,18 +68,19 @@ if ! shopt -oq posix; then
 fi
 
 # Alias
+alias grep='grep --color=auto'
 alias ls='ls --color=auto'
 alias ll='ls -lF'
 alias lrt='ll -rt'
-
-alias grep='grep --color=auto'
-
+alias lg='ll | grep -i $1'
 alias reload='source ~/.bashrc'
+
 #Remove every local branch not existing on remote
 rm_local()
 {
   git fetch -p && for branch in $(git branch -vv | grep ': gone]' | awk '{print $1}'); do git branch -D $branch; done
 }
+#Remove tag on remote and locally
 rm_tag()
 {
   git push origin :refs/tags/$1
@@ -87,4 +88,6 @@ rm_tag()
 }
 
 # Source locally needed alias and stuff
-source ~/.local-stuff
+if [ -f ~/.local-stuff ]; then
+  . ~/.local-stuff
+fi
