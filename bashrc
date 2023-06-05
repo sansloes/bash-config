@@ -38,7 +38,7 @@ parse_git_branch()
 }
 
 if [ "$color_prompt" = yes ] && [ "git rev-parse --is-inside-work-tree" ]; then
-    PS1="${debian_chroot:+($debian_chroot)}\[\033[1;31m\]\u@\h\[\033[00m\]: \[\033[1;30m\]\w\n\[\033[1;34m\]\$(parse_git_branch) \[\033[0;37m\]$ "
+    PS1="${debian_chroot:+($debian_chroot)}\[\033[1;31m\]\u@\h\[\033[00m\]: \[\033[1;30m\]\w\n\[\033[1;30m\]\$(date +%H:%M)\[\033[1;34m\] \$(parse_git_branch) \[\033[0;37m\]$ "
 else
     PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w\$ '
 fi
