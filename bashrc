@@ -87,6 +87,30 @@ rm_tag()
   git tag --delete $1
 }
 
+#Override branch with state from another branch
+override_current_branch()
+{
+  if [ $# -ne 1 ]; then
+    echo "Usage: override_current_branch <source_branch>"
+    return 1
+  fi
+
+  local source_branch="$1"
+  local current_branch=$(git symbolic-ref --short HEAD)
+
+  # Check if the source branch exists
+  if ! git show-ref --verify --quiet "refs/heads/$source_branch"; then
+      echo "Source branch '$source_branch' does not exist."
+      return 1
+  fi
+
+  # Reset the current branch to the commit from the source branch
+  git reset --hard "$source_branch"
+
+  # Push the changes to the remote repository
+  git push --force origin "$current_branch"
+}
+
 # Source locally needed alias and stuff
 if [ -f ~/.local-stuff ]; then
   . ~/.local-stuff
